@@ -6,11 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task1</title>
     <link rel="stylesheet" href="./styles/flex.css">
+    <script src="./scripts/modal.js" defer></script>
+    <script src="./scripts/form.js" defer></script>
 </head>
 <body>
     <div class="wrap">
         <section class="layout">
-            <nav class="layout__navigation"></nav>
+            <nav class="layout__navigation">
+                <span class="navigation__user-email"></span>
+                <div class="navigation__buttons">                
+                    <button class="navigation__button sign-in__button" id='modal-window__sign-in'>Sign in</button>
+                    <button class="navigation__button sign-up__button" id='modal-window__sign-up'>Sign up</button>
+                </div>
+            </nav>
             <div class="columns">
                 <div class="column first__column">Column 1</div>
                 <div class="column second__column">Column 2</div>
@@ -19,5 +27,43 @@
             <footer class="layout__footer"></footer>
         </section>
     </div>
+    <div class="modal-window modal-window__sign-in not-active">
+        <div class="modal-window__content">
+            <span class="modal-window__close"></span>
+            <h2 class="modal-window__content--title">Sign in</h2>
+            <form class="modal-window__content--form" id="sign-in__form">
+                <label for="email__input" class="input__label" >Email</label>
+                <input type="email" id="email__input--sign-in" class="modal-window__content--input">
+                <span id="email__search" class="warning__text"></span>
+
+                <label for="password__input" class="input__label">Password</label>
+                <input type="password" id="password__input--sign-in" class="modal-window__content--input">
+                <span id="password__search" class="warning__text"></span>
+
+                <button class="modal-window__content--button" id="sign-in__button">Sign in</button>
+            </form>
+        </div>
+    </div>
+    <div class="modal-window modal-window__sign-up not-active">
+        <div class="modal-window__content">
+            <span class="modal-window__close"></span>
+            <h2 class="modal-window__content--title">Sign up</h2>
+            <form class="modal-window__content--form" id="sign-up__form">
+                <label for="email__input" class="input__label" >Email</label>
+                <input type="text" id="email__input--sign-up" class="modal-window__content--input">
+                <span id="email__warning" class="warning__text"></span>
+
+                <label for="password__input" class="input__label">Password</label>
+                <input type="password" id="password__input--sign-up" class="modal-window__content--input">
+                <span id="password__warning" class="warning__text"></span>
+
+                <label for="password__input" class="input__label">Repeat password</label>
+                <input type="password" id="password-repeat__input--sign-up" class="modal-window__content--input">
+                <span id="password-repeat__warning" class="warning__text"></span>
+
+                <button class="modal-window__content--button" id="sign-up__button">Sign up</button>
+            </form>
+        </div>
+    </div>    
 </body>
 </html>
