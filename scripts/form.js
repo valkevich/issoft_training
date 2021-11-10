@@ -1,139 +1,113 @@
-class Form {
+import { setItem, getItem } from "./storage.js" 
 
-    constructor(userEmail, userPassword, form){
-        this.userEmail = userEmail
-        this.userPassword = userPassword
+export class Form {
+
+    constructor(form){
         this.form = form
     }
 
-    validateEmail(){
-        let isEmailValid = false
-        const regEmail = new RegExp(/^[^\s@]+@[^\s@]+$/)
-
-        if(regEmail.test(String(this.userEmail.value))){
-            document.querySelector('#email__warning').textContent = ''
-            isEmailValid = true
-        }else {
-            document.querySelector('#email__warning').textContent = 'Email incorrect'
-            isEmailValid = false
-        }
-        return isEmailValid
+    validate() {
+        this.form.childNodes.forEach((children) => {
+            if(children.nodeName === 'INPUT'){
+                if(children.validity.patternMismatch){
+                    children.nextElementSibling.textContent = `${children.getAttribute('data-error')}`
+                }else {
+                    children.nextElementSibling.textContent = ''
+                }
+            }
+        })
     }
 
-    validatePassword() {
-        let isPasswordValid = false
-        const regPassword = new RegExp(/.*([a-z]+[A-Z]+[0-9]+|[a-z]+[0-9]+[A-Z]+|[A-Z]+[a-z]+[0-9]+|[A-Z]+[0-9]+[a-z]+|[0-9]+[a-z]+[A-Z]+|[0-9]+[A-Z]+[a-z]+).*/)
-
-        if(regPassword.test(String(this.userPassword.value))){
-            document.querySelector('#password__warning').textContent = ''
-            isPasswordValid = this.userPassword.value
-        }else {
-            document.querySelector('#password__warning').textContent = 'Password incorrect'
-            isPasswordValid = false
-        }
-
-        return isPasswordValid
+    onSubmit(e){
+        e.preventDefault()
     }
 }
 
 
-class SignUpForm extends Form {
-
-    constructor(userEmail, userPassword, form, confirmedPassword){
+export class SignUpForm extends Form {
+    constructor(form, userEmail, userPassword, userConfirmPassword) {
         super()
+        this.form = form
         this.userEmail = userEmail
         this.userPassword = userPassword
-        this.form = form
-        this.confirmedPassword = confirmedPassword   
+        this.userConfirmPassword = userConfirmPassword
     }
 
     confirmPassword(){
-        if(this.confirmedPassword.value === this.userPassword.value) {
-            document.querySelector('#password-repeat__warning').textContent = ''
+        this.validate()
+        if(this.userPassword.value === this.userConfirmPassword.value){
             return true
         }else {
-            document.querySelector('#password-repeat__warning').textContent = 'Passwords not equal'
+            this.userConfirmPassword.nextElementSibling.textContent = `${this.userConfirmPassword.getAttribute('data-error')}`
             return false
         }
-         
     }
 
     registerUser() {
-        if(this.validateEmail() && this.validatePassword() && this.confirmPassword()){
-            if(localStorage.getItem("users")!= null){
-                const users = JSON.parse(localStorage.getItem('users'))
-                users.push({
-                    email: String(this.userEmail.value),
-                    password: String(this.userPassword.value),
-                })
-                localStorage.setItem('users', JSON.stringify(users))
-            }else{
-                const users = []
-                localStorage.setItem('users', JSON.stringify(users))
+        if(this.confirmPassword()){
+            if(getItem('users') != null){
+                const users = JSON.parse(getItem('users'))
+                users[this.userEmail.value] = {password: this.userPassword.value}
+                setItem('users', JSON.stringify(users))
+                return true
+            }else {
+                const users = {}
+                setItem('users', JSON.stringify(users))
                 this.registerUser()
             }
-            return true
-        }else {
+        }else{
             return false
         }
+    } 
+
+    onSubmit(e){
+        super.onSubmit(e)
+        this.registerUser()
+        this.registerUser() ? document.querySelector('.modal-window__sign-up').classList.add('not-active') : false
+
     }
 }
 
-
-class LoginForm extends Form {
-    constructor(userEmail, userPassword, form){
+export class SignInForm extends Form {
+    constructor(form, userEmail, userPassword) {
         super()
+        this.form = form
         this.userEmail = userEmail
         this.userPassword = userPassword
-        this.form = form
     }
 
     checkUserEmail() {
-        let registredUser = false
-        const users = JSON.parse(localStorage.getItem('users'))
-        users.forEach(user => {
-            if(user.email === this.userEmail.value){
-                registredUser = user
-            }
-        });
-        return registredUser;
-    }
-    
-    checkUserPassword() {
-        let correctUser = this.checkUserEmail();
-        if(correctUser) {
-            document.querySelector('#email__search').textContent = ''
-            if(correctUser.password === this.userPassword.value) {
-                alert("вход выполнен")
-                document.querySelector('.navigation__user-email').textContent = this.userEmail.value
-                document.querySelector('#password__search').textContent = ''
-                return true
-            }else {
-                document.querySelector('#password__search').textContent = 'Wrong password'
-                return false
-            }
+        const users = JSON.parse(getItem('users'))
+        if(this.userEmail.value in users){
+            this.userEmail.nextElementSibling.textContent = ""
+            return true
         }else {
-            document.querySelector('#email__search').textContent = 'User is not found'
+            this.userEmail.nextElementSibling.textContent = `${this.userEmail.getAttribute('data-error')}`
             return false
         }
     }
+
+    checkUserPassword() {
+        if(this.checkUserEmail()){
+            const users = JSON.parse(getItem('users'))
+            if(users[this.userEmail.value].password !== this.userPassword.value){
+                this.userPassword.nextElementSibling.textContent = `${this.userPassword.getAttribute('data-error')}`
+            }else {
+                this.userPassword.nextElementSibling.textContent = ''
+                document.querySelector('.navigation__user-email').textContent = `${this.userEmail.value}`
+                return true
+            }
+        }else {
+            return false
+        }
+    }
+
+    onSubmit(e){
+        super.onSubmit(e)
+        this.checkUserPassword()
+        this.checkUserPassword() ? document.querySelector('.modal-window__sign-in').classList.add('not-active') : false
+    }
 }
-
-
-const formForRegistration = new SignUpForm(document.querySelector('#email__input--sign-up'), document.querySelector('#password__input--sign-up'), document.querySelector('#sign-up__form'), document.querySelector('#password-repeat__input--sign-up'))
-const formForLogin = new LoginForm(document.querySelector('#email__input--sign-in'), document.querySelector('#password__input--sign-in'), document.querySelector('#sign-in__form'))
-
-document.querySelector('#sign-in__button').addEventListener('click', (e) => {
-    e.preventDefault()
-    formForLogin.checkUserPassword()
-})
-
-
-document.querySelector('#sign-up__button').addEventListener('click', (e) => {
-    e.preventDefault()
-    formForRegistration.registerUser()
-})
-
 
 
 
