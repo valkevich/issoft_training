@@ -1,15 +1,20 @@
-let storage = localStorage;
+class Storage {
 
-function setItem(name, value) {
-    storage.setItem(name, value)
+    constructor(storage) {
+        this.storage = storage;
+    }
+
+    setItem(key, value) {
+        this.storage.setItem(key, value);
+    }
+
+    getItem(key) {
+        return this.storage.getItem(key);
+    }
+
+    setStorage(instance) {
+        this.storage = instance;
+    }
 }
 
-function getItem(name) {
-    return storage.getItem(name)
-}
-
-export { setItem, getItem }
-
-export const SetStorage = (instance) => {
-    storage = instance
-}
+export const storage = new Storage(localStorage);

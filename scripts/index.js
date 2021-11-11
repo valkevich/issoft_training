@@ -1,56 +1,55 @@
-import  ModalWindow  from "./modal.js"
-import {Form, SignUpForm, SignInForm} from "./form.js"
-import { setItem, getItem } from "./storage.js" 
+import ModalWindow from "./Modal.js";
+import { SignUpForm } from "./SignUpForm.js";
+import { SignInForm } from "./SignInForm.js";
 
 
 // Modal variables
-const loginModalWindow = document.querySelector('.modal-window__sign-in')
-const registrationModalWindow = document.querySelector('.modal-window__sign-up')
-const loginButton = document.querySelector('#modal-window__sign-in')
-const registrationButton = document.querySelector('#modal-window__sign-up')
-const registrationCloseButton = document.querySelector('#registration__close')
-const loginCloseButton = document.querySelector('#login__close')
+const loginModalWindow = document.querySelector('.modal-window__sign-in');
+const registrationModalWindow = document.querySelector('.modal-window__sign-up');
+const loginButton = document.querySelector('#modal-window__sign-in');
+const registrationButton = document.querySelector('#modal-window__sign-up');
+const registrationCloseButton = document.querySelector('#registration__close');
+const loginCloseButton = document.querySelector('#login__close');
 
-const signInModal = new ModalWindow(loginModalWindow)
-const signUpModal = new ModalWindow(registrationModalWindow)
+const signInModal = new ModalWindow(loginModalWindow);
+const signUpModal = new ModalWindow(registrationModalWindow);
 
 //Form variables
-let formForRegistration = new SignUpForm(document.querySelector('#sign-up__form'), document.querySelector('#email__input--sign-up'), document.querySelector('#password__input--sign-up'), document.querySelector('#password-repeat__input--sign-up'))
-let formForLogin = new SignInForm(document.querySelector('#sign-in__form'), document.querySelector('#email__input--sign-in'), document.querySelector('#password__input--sign-in'))
-
+const formForRegistration = new SignUpForm(document.querySelector('#sign-up__form'), document.querySelector('#email__input--sign-up'), document.querySelector('#password__input--sign-up'), document.querySelector('#password-repeat__input--sign-up'));
+const formForLogin = new SignInForm(document.querySelector('#sign-in__form'), document.querySelector('#email__input--sign-in'), document.querySelector('#password__input--sign-in'));
 
 
 // Modal event listeners
 loginButton.addEventListener('click', () => {
-    signInModal.openModalWindow()
+    signInModal.openModalWindow();
 })
 
 registrationButton.addEventListener('click', () => {
-    signUpModal.openModalWindow()
+    signUpModal.openModalWindow();
 })
 
 loginCloseButton.addEventListener('click', () => {
-    signInModal.closeModalWindow()
+    signInModal.closeModalWindow();
 })
 
 registrationCloseButton.addEventListener('click', () => {
-    signUpModal.closeModalWindow()
+    signUpModal.closeModalWindow();
 })
 
 
 //Form event listeners
 document.querySelector('#sign-up__form').addEventListener('click', () => {
-    formForRegistration.validate()
+    formForRegistration.validate();
 })
 
 document.querySelector('#sign-in__form').addEventListener('click', () => {
-    formForLogin.validate()
+    formForLogin.validate();
 })
 
 document.querySelector('#sign-up__form').addEventListener('submit', (e) => {
-    formForRegistration.onSubmit(e)
+    formForRegistration.onSubmit(e);
 })
 
 document.querySelector('#sign-in__form').addEventListener('submit', (e) => {
-    formForLogin.onSubmit(e)
+    formForLogin.onSubmit(e);
 })
