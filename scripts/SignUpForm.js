@@ -1,13 +1,15 @@
 import { Form } from "./Form.js";
 import { storage } from "./storage.js";
+import { modalWindow } from "./index.js";
 
 export class SignUpForm extends Form {
-    constructor(form, userEmail, userPassword, userConfirmPassword) {
+    constructor(form, userEmail, userPassword, userConfirmPassword, userBithDate) {
         super();
         this.form = form;
         this.userEmail = userEmail;
         this.userPassword = userPassword;
         this.userConfirmPassword = userConfirmPassword;
+        this.userBithDate = userBithDate;
     }
 
     confirmPassword() {
@@ -20,11 +22,20 @@ export class SignUpForm extends Form {
         }
     }
 
+    checkUserSex() {
+        return document.querySelector('input[name="sex"]:checked').value;
+    }
+
+
     registerUser() {
         if (this.confirmPassword()) {
             if (storage.getItem('users') != null) {
                 const users = JSON.parse(storage.getItem('users'));
-                users[this.userEmail.value] = { password: this.userPassword.value };
+                users[this.userEmail.value] = { 
+                    password: this.userPassword.value,
+                    birthDate: this.userBithDate.value,
+                    sex: this.checkUserSex()
+                };
                 storage.setItem('users', JSON.stringify(users));
                 return true;
             } else {
@@ -40,7 +51,10 @@ export class SignUpForm extends Form {
     onSubmit(e) {
         super.onSubmit(e);
         this.registerUser();
-        this.registerUser() ? document.querySelector('.modal-window__sign-up').classList.add('not-active') : false;
+        if (this.registerUser()) {
+            this.cleanForm();
+            modalWindow.closeModal(document.querySelector('#sign-up__form'));
+        }
 
     }
 }

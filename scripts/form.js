@@ -4,6 +4,14 @@ export class Form {
         this.form = form;
     }
 
+    cleanForm() {
+        this.form.childNodes.forEach((children) => {
+            if (children.nodeName === 'INPUT') {
+                children.value = '';
+            }
+        })
+    }
+
     validate() {
         this.form.childNodes.forEach((children) => {
             if (children.nodeName === 'INPUT') {

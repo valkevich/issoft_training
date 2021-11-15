@@ -1,5 +1,6 @@
 import { Form } from "./Form.js";
 import { storage } from "./storage.js";
+import { modalWindow } from "./index.js";
 
 export class SignInForm extends Form {
     constructor(form, userEmail, userPassword) {
@@ -35,9 +36,13 @@ export class SignInForm extends Form {
         }
     }
 
+
     onSubmit(e) {
         super.onSubmit(e);
         this.checkUserPassword();
-        this.checkUserPassword() ? document.querySelector('.modal-window__sign-in').classList.add('not-active') : false;
+        if (this.checkUserPassword()) {
+            this.cleanForm();
+            modalWindow.closeModal(document.querySelector('#sign-in__form'));
+        } else false;
     }
 }
