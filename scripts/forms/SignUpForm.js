@@ -1,6 +1,6 @@
 import { Form } from "./Form.js";
-import { storage } from "./storage.js";
-import { modalWindow } from "./index.js";
+import { storage } from "../storage/storage.js";
+import { modalWindow } from "../main/index.js";
 
 export class SignUpForm extends Form {
     constructor(form, userEmail, userPassword, userConfirmPassword, userBithDate) {
@@ -32,6 +32,7 @@ export class SignUpForm extends Form {
             if (storage.getItem('users') != null) {
                 const users = JSON.parse(storage.getItem('users'));
                 users[this.userEmail.value] = { 
+                    email: this.userEmail.value,
                     password: this.userPassword.value,
                     birthDate: this.userBithDate.value,
                     sex: this.checkUserSex()

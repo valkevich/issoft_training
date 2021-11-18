@@ -1,6 +1,6 @@
-import Modal from "./Modal.js";
-import { SignUpForm } from "./SignUpForm.js";
-import { SignInForm } from "./SignInForm.js";
+import { SignUpForm } from "../forms/SignUpForm.js";
+import { SignInForm } from "../forms/SignInForm.js";
+import { Modal } from "../modal/Modal.js"
 
 
 // Modal variables
@@ -11,7 +11,7 @@ const registrationButton = document.querySelector('#modal-window__sign-up');
 
 
 //Form variables
-const formForRegistration = new SignUpForm(document.querySelector('#sign-up__form'), document.querySelector('#email__input--sign-up'), document.querySelector('#password__input--sign-up'), document.querySelector('#password-repeat__input--sign-up'),document.querySelector('#date-input'));
+const formForRegistration = new SignUpForm(document.querySelector('#sign-up__form'), document.querySelector('#email__input--sign-up'), document.querySelector('#password__input--sign-up'), document.querySelector('#password-repeat__input--sign-up'), document.querySelector('#date-input'));
 const formForLogin = new SignInForm(document.querySelector('#sign-in__form'), document.querySelector('#email__input--sign-in'), document.querySelector('#password__input--sign-in'));
 
 
