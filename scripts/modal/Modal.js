@@ -1,4 +1,4 @@
-export default class Modal {
+export class Modal {
     static instance = null;
     constructor() {
         if (Modal.instance) {
