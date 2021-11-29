@@ -24,6 +24,21 @@ export class Form {
         })
     }
 
+    getUserData() {
+        Array.from(this.form).forEach((element) => {
+            if (element.nodeName === 'INPUT') {
+                if (element.type === 'radio') {
+                    if (element.checked === true) {
+                        this.userData[element.name] = element.value;
+                    }
+                } else {
+                    this.userData[element.name] = element.value;
+                }
+            }
+        });
+        return this.userData;
+    }
+
     onSubmit(e) {
         e.preventDefault();
     }

@@ -135,10 +135,6 @@ body {
     transform: rotate(-45deg);
 }
 
-.not-active {
-    display: none;
-}
-
 
 /* Page styles */
 
@@ -159,7 +155,7 @@ body {
     width: 100%;
     height: 80px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     background: #9EDEDE;
 }
 

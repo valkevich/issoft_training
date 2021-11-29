@@ -1,10 +1,11 @@
+let instance;
+
 export class Modal {
     static instance = null;
     constructor() {
-        if (Modal.instance) {
-            return Modal.instance;
-        }
-        Modal.instance = this;
+        if (!instance) instance = this;
+        return instance;
+        this.modal;
     }
 
     getTemplate() {
@@ -20,15 +21,14 @@ export class Modal {
     openModal(form) {
         document.body.insertAdjacentHTML('afterend', this.getTemplate());
         const modalWindow = document.querySelector('.modal-window__content');
-        form.classList.remove('not-active');
         modalWindow.append(form);
-
+        this.modal = modalWindow;
     }
 
-    closeModal(form) {
-        const modal = document.querySelector('.modal-window');
-        form.classList.add('not-active');
-        document.body.append(form);
-        modal.remove();
+    closeModal() {
+        this.modal.parentElement.remove();
     }
 }
+
+
+export const modalWindow = new Modal();
